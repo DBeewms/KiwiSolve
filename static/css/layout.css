@@ -1,0 +1,51 @@
+/*
+  layout.css – Primitivas de layout (header/nav/main/footer)
+  Mantiene estructura y espaciado consistente a nivel app.
+*/
+
+/* Barra superior fija con fondo blanco y sombra sutil */
+.header {
+  position: sticky;
+  top: 0; z-index: 10;
+  background: #ffffff; /* solicitado: header blanco */
+  color: var(--ks-color-text);
+  box-shadow: var(--ks-shadow-md); /* sombra que separa el header del contenido */
+}
+
+/* Contenedor interno flexible para alinear logo y navegación */
+.header .inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.25rem; /* header ligeramente más grande */
+}
+
+/* Enlace de marca: logo + nombre */
+.brand {
+  display: inline-flex; align-items: center; gap: .75rem; text-decoration: none; color: inherit;
+}
+
+/* Logo sin encapsulado ni “cajita” */
+.brand-logo { display: grid; place-items: center; }
+.brand-logo img { width: 48px; height: 48px; display: block; }
+.brand-name { font-weight: 700; letter-spacing: .3px; font-size: 1.15rem; }
+
+.nav a { color: var(--ks-color-text); opacity: .85; text-decoration: none; margin-left: 1rem; }
+.nav a:hover { opacity: 1; text-decoration: underline; }
+
+.main { padding: 2rem 0; flex: 1; }
+.footer { padding: 1.25rem 0; color: var(--ks-color-muted); background: #ffffff; border-top: 1px solid var(--ks-color-border); }
+.footer .container { display: flex; align-items: center; justify-content: center; min-height: 56px; }
+.footer small { font-size: .9rem; letter-spacing: .2px; }
+
+/* En el footer no encapsular el logo si se usa */
+.footer .brand-logo { background: none; box-shadow: none; border-radius: 0; }
+
+/* Transiciones suaves al cambiar modo claro/oscuro */
+html { transition: background-color .35s ease, color .35s ease; }
+body { transition: background-color .35s ease, color .35s ease; }
+
+/* Ajustes de tema oscuro para header/nav (opcional, mejora de contraste) */
+html[data-theme='dark'] .header { background: #0f162e; color: #e5e7eb; }
+html[data-theme='dark'] .nav a { color: #e5e7eb; opacity: .9; }
+html[data-theme='dark'] .footer { background: #0f162e; border-top-color: #1f2937; color: #9ca3af; }

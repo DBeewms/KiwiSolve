@@ -1,11 +1,23 @@
-﻿<!doctype html>
-<html lang="es">
-<head>
-  <meta charset="utf-8">
-  <title>Linear Algebra Django</title>
-</head>
-<body>
-  <h1>¡Hola, Álgebra Lineal!</h1>
-  <p>Página de inicio temporal.</p>
-</body>
-</html>
+﻿{% extends 'base.html' %}
+{% block title %}Inicio · KiwiSolve{% endblock %}
+
+{% block content %}
+  <h1>Álgebra Lineal – Demo inicial</h1>
+  <p>Bienvenido a <strong>KiwiSolve</strong>. Esta es la estructura inicial: endpoints de demostración y estilos base para comenzar a integrar tu logo y UX.</p>
+
+  <div style="margin:1.5rem 0; display:flex; gap:1rem;">
+    <a class="button" href="/algebra/matmul/">Probar MatMul</a>
+    <a class="button secondary" href="/algebra/det/">Probar Determinante</a>
+    <a class="button outline" href="/">Recargar</a>
+  </div>
+
+  <section>
+    <h2>Próximos pasos</h2>
+    <ul>
+      <li>Crear carpeta <code>apps/algebra/services/</code> con lógica pura (matrices, determinante, validaciones).</li>
+      <li>Agregar pruebas en <code>apps/algebra/tests.py</code> apuntando a <em>services</em>.</li>
+      <li>Incluir formulario o endpoint JSON para enviar matrices.</li>
+      <li>Optimizar rendimiento (NumPy / SymPy según operación).</li>
+    </ul>
+  </section>
+{% endblock %}

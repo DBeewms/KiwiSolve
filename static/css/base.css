@@ -1,0 +1,40 @@
+/*
+  base.css – Reset mínimo + estilos globales
+  Principios:
+    - Evitar resets agresivos (mantener accesibilidad por defecto).
+    - Normalizar box-sizing y tipografía.
+    - Reutilizar variables de kiwisolve.css
+*/
+
+/* Consistencia en cálculos de tamaño */
+* { box-sizing: border-box; }
+
+/* Altura completa para layout flexibles futuros */
+html, body { height: 100%; }
+
+/* Estilos de cuerpo: tipografía, color y suavizado de fuentes */
+body {
+  margin: 0;
+  display: flex;              /* Para empujar el footer al fondo */
+  min-height: 100vh;          /* Layout a pantalla completa */
+  flex-direction: column;     /* Header, Main (flex:1), Footer */
+  background: var(--ks-color-bg);
+  color: var(--ks-color-text);
+  font-family: var(--ks-font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.45;
+}
+
+/* Imágenes fluidas */
+img { max-width: 100%; display: block; }
+
+/* Links accesibles y con color de marca */
+a { color: var(--ks-color-violet-blue); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* Separadores semánticos */
+hr { border: 0; border-top: 1px solid var(--ks-color-border); margin: 2rem 0; }
+
+/* Contenedor central estándar */
+.container { max-width: 1100px; margin: 0 auto; padding: 0 1rem; }

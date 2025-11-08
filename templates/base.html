@@ -1,0 +1,42 @@
+{% load static %}
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <title>{% block title %}KiwiSolve · Álgebra Lineal{% endblock %}</title>
+  <!-- Tokens y estilos globales -->
+  <link rel="stylesheet" href="{% static 'css/kiwisolve.css' %}">
+  <link rel="stylesheet" href="{% static 'css/base.css' %}">
+  <link rel="stylesheet" href="{% static 'css/layout.css' %}">
+  <link rel="stylesheet" href="{% static 'css/components/buttons.css' %}">
+  <link rel="stylesheet" href="{% static 'css/components/theme-toggle.css' %}">
+  <link rel="stylesheet" href="{% static 'css/themes/kiwisolve-dark.css' %}">
+  {% block extra_head %}{% endblock %}
+  <script>
+    // Inicialización de tema: SIEMPRE claro por defecto salvo preferencia guardada
+    (() => {
+      try {
+        const root = document.documentElement;
+        const stored = localStorage.getItem('ks-theme');
+        const mode = stored ? stored : 'light';
+        if (mode === 'dark') {
+          root.setAttribute('data-theme', 'dark');
+          root.classList.add('dark'); // compatibilidad
+        } else {
+          root.setAttribute('data-theme', 'light');
+          root.classList.remove('dark');
+        }
+      } catch (_) {}
+    })();
+  </script>
+</head>
+<body>
+  {% include 'partials/_header.html' %}
+  <main class="main container">
+    {% block content %}{% endblock %}
+  </main>
+  {% include 'partials/_footer.html' %}
+  <script src="{% static 'js/theme-toggle.js' %}"></script>
+  {% block extra_js %}{% endblock %}
+</body>
+</html>

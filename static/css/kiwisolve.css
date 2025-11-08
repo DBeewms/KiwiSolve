@@ -1,0 +1,54 @@
+/*
+  KiwiSolve – Design Tokens y Variables de Tema
+  Objetivo: centralizar colores, tipografías, radios y sombras.
+  Uso: importa este archivo antes que base.css/layout.css/components.
+  Principio: una sola fuente de verdad para el diseño (Clean Code: DRY, semántico).
+*/
+
+/* Variables por defecto (modo claro) */
+:root {
+  --ks-color-sky: #7BBBC4;
+  --ks-color-grape: #6A1B9A;
+  --ks-color-royal-purple: #7E57C2;
+  --ks-color-violet-blue: #3949AB;
+  --ks-color-savoy: #5C6BC0;
+
+  /* Colores de superficie y contenido */
+  --ks-color-bg: #F6F7FB; /* Fondo claro por defecto (solicitado) */
+  --ks-color-text: #1f2937; /* slate-800 */
+  --ks-color-muted: #6b7280; /* gray-500 */
+  --ks-color-border: #e5e7eb; /* gray-200 */
+
+  /* Radios consistentes */
+  --ks-radius-xs: 4px;
+  --ks-radius-sm: 6px;
+  --ks-radius-md: 10px;
+  --ks-radius-lg: 14px;
+
+  /* Elevaciones consistentes */
+  --ks-shadow-sm: 0 1px 2px rgba(0,0,0,.05);
+  --ks-shadow-md: 0 6px 18px rgba(31,41,55,.12);
+  --ks-shadow-lg: 0 12px 28px rgba(31,41,55,.18);
+
+  /* Tipografía del sistema para rendimiento y legibilidad */
+  --ks-font-sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, Noto Sans, "Apple Color Emoji", "Segoe UI Emoji";
+}
+
+/*
+  NOTA SOBRE MODO OSCURO
+  Se eliminó la detección automática via `prefers-color-scheme` para evitar
+  que el tema se "enganche" al modo del sistema. Política actual:
+    - Siempre iniciar en modo claro (light) salvo preferencia explícita guardada.
+    - El toggle establece data-theme="dark" y clase .dark manualmente.
+  Si en el futuro deseas reactivar la detección automática, puedes restaurar
+  un bloque @media similar al eliminado anteriormente o usar JS para consultarlo.
+*/
+
+/* Overrides equivalentes cuando se usa atributo data-theme="dark" */
+html.dark,
+html[data-theme='dark'] {
+  --ks-color-bg: #0b1020;
+  --ks-color-text: #e5e7eb;
+  --ks-color-muted: #9ca3af;
+  --ks-color-border: #1f2937;
+}

@@ -1,0 +1,12 @@
+/*
+  kiwisolve-dark.css – Overrides explícitos para modo oscuro manual.
+  Uso: añadir la clase .dark o atributo data-theme="dark" al <html>. Ejemplo:
+    <html class="dark"> ...
+  Nota: la detección automática del sistema está desactivada a propósito.
+*/
+html.dark {
+  --ks-color-bg: #0b1020;
+  --ks-color-text: #e5e7eb;
+  --ks-color-muted: #9ca3af;
+  --ks-color-border: #1f2937;
+}

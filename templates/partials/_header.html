@@ -1,0 +1,23 @@
+{% load static %}
+<header class="header">
+  <div class="inner container">
+    <a class="brand" href="/">
+      <span class="brand-logo">
+        <img src="{% static 'img/KiwiSolveLogo.png' %}" alt="Logo KiwiSolve">
+      </span>
+      <span class="brand-name">KiwiSolve</span>
+    </a>
+    <nav class="nav" aria-label="Principal">
+      <a href="/">Inicio</a>
+      <a href="/algebra/matmul/">MatMul</a>
+      <a href="/algebra/det/">Determinante</a>
+    </nav>
+    <!-- Toggle de tema: chip slider accesible (button con role="switch") -->
+    <button id="ks-theme-toggle" class="theme-toggle" type="button" role="switch" aria-checked="false" aria-label="Cambiar tema">
+      <span class="tt-track" aria-hidden="true"></span>
+      <span class="tt-icon sun" aria-hidden="true">🌞</span>
+      <span class="tt-icon moon" aria-hidden="true">🌙</span>
+      <span class="tt-handle" aria-hidden="true"></span>
+    </button>
+  </div>
+</header>
