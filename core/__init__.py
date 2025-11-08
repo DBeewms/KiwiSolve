@@ -12,6 +12,11 @@ from .number_mode import (
     is_one,
     eq,
 )
+from .parse import (
+    parse_scalar,
+    parse_vector,
+    parse_matrix,
+)
 
 __all__ = [
     "set_number_mode",
@@ -20,4 +25,7 @@ __all__ = [
     "is_zero",
     "is_one",
     "eq",
+    "parse_scalar",
+    "parse_vector",
+    "parse_matrix",
 ]
