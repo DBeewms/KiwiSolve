@@ -29,6 +29,20 @@ from .validate import (
     asegurar_intervalo,
     asegurar_cambio_signo,
 )
+from .steps import (
+    Steps,
+)
+from .matrix_utils import (
+    ceros,
+    identidad,
+    copiar,
+    aumentar,
+    dividir_aumentada,
+    intercambiar_filas,
+    escalar_fila,
+    sumar_multiplo_fila,
+    buscar_fila_pivote,
+)
 
 __all__ = [
     "configurar_modo_numerico",
@@ -48,4 +62,14 @@ __all__ = [
     "asegurar_aumentada",
     "asegurar_intervalo",
     "asegurar_cambio_signo",
+    "Steps",
+    "ceros",
+    "identidad",
+    "copiar",
+    "aumentar",
+    "dividir_aumentada",
+    "intercambiar_filas",
+    "escalar_fila",
+    "sumar_multiplo_fila",
+    "buscar_fila_pivote",
 ]

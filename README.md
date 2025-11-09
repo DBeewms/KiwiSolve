@@ -43,6 +43,8 @@ core/
   format.py        # Formateo legible de escalares y matrices (auto fracción/decimal)
   validate.py      # Validaciones de dimensiones y precondiciones (fail-fast)
   utils.py         # Utilidades compartidas (secuencia/matriz, normalización)
+  matrix_utils.py  # Primitivas de matrices (ceros, identidad, copiar, aumentar, dividir_aumentada, ...)
+  steps.py         # Trazabilidad pedagógica opcional (Steps)
 config/            # settings/urls/wsgi/asgi
 static/            # css/js/img (incluye toggle de tema)
 templates/         # base.html + partials (_header, _footer)
@@ -70,7 +72,6 @@ configurar_modo_numerico("float", decimales=4, tolerancia=1e-9)
 son_iguales(0.1 + 0.2, 0.3)           # True (comparación tolerante)
 ```
 
-> Nota: la documentación completa y ejemplos detallados están en `README_number_mode.md`.
 
 ## Flujo completo de datos (core pipeline)
 El núcleo sigue una secuencia clara para transformar entrada de usuario en resultados confiables:
@@ -93,6 +94,7 @@ El núcleo sigue una secuencia clara para transformar entrada de usuario en resu
 4. Operación algebraica / numérica (futuro en `apps/algebra/services/`)
   - Ejemplos planeados: producto de matrices, determinante, eliminación gaussiana, métodos iterativos.
   - Cada servicio debe llamar primero a validaciones y luego usar representación del modo numérico.
+  - Para operaciones de bajo nivel sobre filas/columnas, usar `core/matrix_utils.py`.
 
 5. Formateo para salida -> `format.py`
   - `formatear_escalar`: en `auto`, si la fracción tiene decimal finito se muestra como decimal recortado; si no, fracción `a/b`.
@@ -150,6 +152,66 @@ salida = formatear_matriz([[valor_modo]])      # [["2.25"]] (decimal finito)
 | utils.py | normalizar_a_matriz | Reestructurar escalar/1D/2D a 2D |
 | format.py | formatear_escalar | Formato humano (auto/fraction/float) |
 | format.py | formatear_matriz | Matriz de cadenas formateadas |
+| matrix_utils.py | ceros | Crea matriz m×n de ceros |
+| matrix_utils.py | identidad | Matriz identidad n×n |
+| matrix_utils.py | copiar | Copia profunda de matriz |
+| matrix_utils.py | aumentar | Concatena horizontalmente [A | B] |
+| matrix_utils.py | dividir_aumentada | Parte [A | B] en (A, B) |
+| matrix_utils.py | intercambiar_filas | Intercambia filas i y j |
+| matrix_utils.py | escalar_fila | F_i ← c · F_i |
+| matrix_utils.py | sumar_multiplo_fila | F_i ← F_i + c · F_j |
+| matrix_utils.py | buscar_fila_pivote | Busca fila con pivote no nulo |
+| steps.py | Steps (begin/add/end) | Registro pedagógico opcional de pasos |
+
+### Registro pedagógico opcional (Steps)
+El módulo `core/steps.py` permite capturar una secuencia de pasos para explicar operaciones.
+
+Ejemplo rápido:
+```python
+from core import Steps, asegurar_cuadrada, formatear_matriz
+
+steps = Steps()
+steps.begin("determinante")
+steps.add("validar matriz", {"n": 2})
+asegurar_cuadrada([[1,2],[3,4]])
+steps.add("expansión menor (demo)", {"fila":0})
+steps.end({"resultado": "ejemplo"})
+
+print(steps.to_list())
+# [
+#   {"op": "determinante", "state": {}, "etapa": "inicio", ...},
+#   {"op": "determinante", "state": {"n": 2}, "etapa": "paso", "msg": "validar matriz", ...},
+#   {"op": "determinante", "state": {"fila": 0}, "etapa": "paso", ...},
+#   {"op": "determinante", "state": {"resultado": "ejemplo"}, "etapa": "fin", ...}
+# ]
+```
+
+Las funciones públicas podrán (en el futuro) aceptar un parámetro opcional `steps: Steps | None` para registrar su progreso sin obligar a la UI a mostrarlo.
+
+### Primitivas de matrices (matrix_utils)
+Utilidades atómicas para construir y manipular matrices sin mutar las entradas. Todas validan estructura y lanzan errores claros en español.
+
+Ejemplo rápido:
+```python
+from core import (
+  ceros, identidad, copiar, aumentar, dividir_aumentada,
+  intercambiar_filas, escalar_fila, sumar_multiplo_fila, buscar_fila_pivote,
+  configurar_modo_numerico
+)
+
+configurar_modo_numerico('fraction')
+A = ceros(2, 3)                 # [[0,0,0],[0,0,0]]
+I = identidad(3)                # 3x3
+C = copiar(I)                   # copia profunda
+AB = aumentar(I, [[10],[20],[30]])
+A_part, B_part = dividir_aumentada(AB, 3)
+
+M = [[1,2,3],[0,4,5],[0,0,6]]
+M2 = intercambiar_filas(M, 0, 2)
+M3 = escalar_fila(M, 1, 2)
+M4 = sumar_multiplo_fila(M, 0, 1, -0.5)
+fila = buscar_fila_pivote(M, col=1, fila_inicio=0)  # 0
+```
 
 
 ## UI y temas
