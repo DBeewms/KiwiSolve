@@ -11,8 +11,7 @@ Resumen de la API pública (en español):
 - convertir_a_matriz(M)
 - son_iguales(a, b), es_cero(x), es_uno(x)
 
-Compatibilidad: se exponen alias con los nombres anteriores en inglés
-(set_number_mode, to_num, to_matrix, eq, is_zero, is_one).
+Compatibilidad: toda la API se expone exclusivamente en español.
 
 Notas
 - Este módulo no depende de Django, se puede testear en aislamiento.
@@ -20,6 +19,7 @@ Notas
 
 from fractions import Fraction
 from decimal import Decimal
+from .utils import es_secuencia as _es_secuencia
 
 # --- Estado global mínimo -----------------------------------------------------
 # "fraction" (exacto) o "float" (aproximado)
@@ -30,11 +30,7 @@ _tolerancia = 1e-9
 
 # --- Utilidades internas ------------------------------------------------------
 
-def _es_secuencia(obj):
-    """True si es list o tuple (y no es str); en caso contrario False."""
-    if isinstance(obj, str):
-        return False
-    return isinstance(obj, (list, tuple))
+ # es_secuencia ahora se importa desde core.utils para evitar duplicación.
 
 
 def _redondear_float(x):
@@ -205,10 +201,4 @@ def es_uno(x):
     """Devuelve True si x es uno bajo el modo activo."""
     return son_iguales(x, 1)
 
-# --- Alias en inglés para compatibilidad -------------------------------------
-set_number_mode = configurar_modo_numerico
-to_num = convertir_a_numero
-to_matrix = convertir_a_matriz
-eq = son_iguales
-is_zero = es_cero
-is_one = es_uno
+# No se definen alias en inglés: preferimos una API coherente en español.

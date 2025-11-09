@@ -1,4 +1,4 @@
-# KiwiSolve — Guía general del proyecto y política de números
+# KiwiSolve — Guía general del proyecto y política de números (API 100% en español)
 
 Proyecto cooperativo en Django para aprender y practicar Álgebra Lineal con una interfaz clara. Este documento resume cómo trabajar juntos y la filosofía numérica del proyecto a un nivel general.
 
@@ -39,6 +39,10 @@ apps/
   algebra/    # Próximas operaciones de álgebra (servicios en services/)
 core/
   number_mode.py   # Política de números unificada (ver sección abajo)
+  parse.py         # Parser seguro de texto a números, vectores y matrices
+  format.py        # Formateo legible de escalares y matrices (auto fracción/decimal)
+  validate.py      # Validaciones de dimensiones y precondiciones (fail-fast)
+  utils.py         # Utilidades compartidas (secuencia/matriz, normalización)
 config/            # settings/urls/wsgi/asgi
 static/            # css/js/img (incluye toggle de tema)
 templates/         # base.html + partials (_header, _footer)
@@ -52,21 +56,101 @@ El archivo `core/number_mode.py` define cómo representamos y comparamos número
   - `float`: valores en punto flotante con redondeo y tolerancia.
 - Conversión segura de cadenas: soporta `"a/b"`, `"3.14"`, `"1e-3"`, etc.
 - Comparaciones: usar la API del módulo en lugar de `==` cuando se trabaje con floats.
-- API legible en español con alias en inglés para compatibilidad.
+- API legible exclusivamente en español (sin alias en inglés para evitar mezcla de estilos).
 
 Uso típico (muy resumido):
 ```python
-from core import number_mode as nm
+from core import configurar_modo_numerico, convertir_a_numero, son_iguales
 
 # Modo exacto por defecto
-a = nm.to_num("3/4")         # Fraction(3, 4)
+a = convertir_a_numero("3/4")         # Fraction(3, 4)
 
 # Cambiar a float con redondeo/tolerancia
-nm.set_number_mode("float", decimales=4, tolerancia=1e-9)
-nm.eq(0.1 + 0.2, 0.3)         # True (comparación tolerante)
+configurar_modo_numerico("float", decimales=4, tolerancia=1e-9)
+son_iguales(0.1 + 0.2, 0.3)           # True (comparación tolerante)
 ```
 
 > Nota: la documentación completa y ejemplos detallados están en `README_number_mode.md`.
+
+## Flujo completo de datos (core pipeline)
+El núcleo sigue una secuencia clara para transformar entrada de usuario en resultados confiables:
+
+1. Entrada textual (formulario, campo web) -> `parse.py`
+  - `parsear_escalar`, `parsear_vector`, `parsear_matriz` convierten cadenas restringidas a tipos nativos (`int`, `float`, `Fraction`).
+  - Reglas estrictas: fracciones, potencias con `^`, raíz `sqrt(...)`, paréntesis y signo negativo unario. Sin sumas/restas binarias.
+  - Errores en español (ValueError) si la sintaxis es inválida.
+
+2. Conversión al modo numérico -> `number_mode.py`
+  - Funciones: `convertir_a_numero` y `convertir_a_matriz`.
+  - Decide según modo global (`fraction` o `float`) cómo representar internamente.
+  - En modo `float` aplica redondeo y tolerancia para comparaciones (`son_iguales`).
+
+3. Validación estructural / precondiciones -> `validate.py`
+  - `asegurar_rectangular`, `asegurar_cuadrada`, `asegurar_multiplicable`, `asegurar_aumentada` para matrices.
+  - `asegurar_intervalo`, `asegurar_cambio_signo` para algoritmos numéricos (p.ej. bisección).
+  - Fallos rápidos con mensajes claros (ValueError).
+
+4. Operación algebraica / numérica (futuro en `apps/algebra/services/`)
+  - Ejemplos planeados: producto de matrices, determinante, eliminación gaussiana, métodos iterativos.
+  - Cada servicio debe llamar primero a validaciones y luego usar representación del modo numérico.
+
+5. Formateo para salida -> `format.py`
+  - `formatear_escalar`: en `auto`, si la fracción tiene decimal finito se muestra como decimal recortado; si no, fracción `a/b`.
+  - Modos forzados: `fraction`, `float`.
+  - `formatear_matriz` aplica `formatear_escalar` elemento a elemento y normaliza a 2D.
+
+6. Render / UI
+  - Los strings formateados llegan a templates para mostrar resultados consistentes.
+
+### Ejemplo encadenado (mini flujo)
+```python
+from core import parsear_escalar, convertir_a_numero, asegurar_cuadrada, formatear_matriz
+
+texto = "(3/2)^(2)"          # 9/4 exacto
+valor_nativo = parsear_escalar(texto)          # Fraction(9,4)
+valor_modo = convertir_a_numero(valor_nativo)  # Fraction(9,4) (modo fraction por defecto)
+asegurar_cuadrada([[valor_modo]])              # Matriz 1x1 es cuadrada
+salida = formatear_matriz([[valor_modo]])      # [["2.25"]] (decimal finito)
+```
+
+### Decisiones de diseño
+- Separación de responsabilidades: parse (texto) / number_mode (representación) / validate (precondición) / format (presentación).
+- Fail-fast: evitar trabajar sobre datos mal formados o dimensiones incorrectas.
+- Legibilidad: funciones y mensajes en español; sin anotaciones tipo `->` en la API para reducir ruido al aprendizaje.
+- Exactitud vs rendimiento: fracciones para precisión; flotantes sólo cuando el usuario lo configure.
+
+### Errores típicos y origen
+| Error | Módulo | Causa |
+|-------|--------|-------|
+| "carácter no permitido" | parse.py | Token inválido en entrada textual |
+| "A debe ser cuadrada" | validate.py | Matriz no cumple nfilas == ncols |
+| "modo debe ser 'fraction' o 'float'" | number_mode.py | Configuración inválida |
+| "tipo no soportado para formato automático" | format.py | Escalar de tipo inesperado |
+
+## Referencia rápida de funciones core
+
+| Archivo | Función | Propósito resumido |
+|---------|---------|--------------------|
+| parse.py | parsear_escalar | Texto -> número nativo seguro |
+| parse.py | parsear_vector | Texto -> lista de números |
+| parse.py | parsear_matriz | Texto -> matriz de números |
+| number_mode.py | configurar_modo_numerico | Seleccionar modo global |
+| number_mode.py | convertir_a_numero | Adaptar escalar/vector al modo |
+| number_mode.py | convertir_a_matriz | Adaptar a matriz modo-activa |
+| number_mode.py | son_iguales | Comparación tolerante/exacta |
+| number_mode.py | es_cero | Chequeo de cero según modo |
+| number_mode.py | es_uno | Chequeo de uno según modo |
+| validate.py | asegurar_rectangular | Verifica forma rectangular |
+| validate.py | asegurar_cuadrada | Verifica cuadrada |
+| validate.py | asegurar_multiplicable | Compatibilidad multiplicación |
+| validate.py | asegurar_aumentada | Forma aumentada Ax=b |
+| validate.py | asegurar_intervalo | Verifica a < b |
+| validate.py | asegurar_cambio_signo | Cambio de signo (bisección) |
+| utils.py | es_secuencia / es_matriz | Detección de colecciones/matriz 2D |
+| utils.py | normalizar_a_matriz | Reestructurar escalar/1D/2D a 2D |
+| format.py | formatear_escalar | Formato humano (auto/fraction/float) |
+| format.py | formatear_matriz | Matriz de cadenas formateadas |
+
 
 ## UI y temas
 - Botón de tema claro/oscuro (manual) en el header.
@@ -101,6 +185,7 @@ nm.eq(0.1 + 0.2, 0.3)         # True (comparación tolerante)
 
 ## Próximos pasos
 - Suite de tests para `core/number_mode.py`.
+- Refactor utilidades comunes (core/utils) para reducir duplicación.
 - Primeros servicios en `apps/algebra/services/` (producto de matrices, determinante, etc.).
 - Página de ejemplos interactivos.
 

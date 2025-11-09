@@ -5,27 +5,47 @@ across algebra operations.
 """
 
 from .number_mode import (
-    set_number_mode,
-    to_num,
-    to_matrix,
-    is_zero,
-    is_one,
-    eq,
+    configurar_modo_numerico,
+    convertir_a_numero,
+    convertir_a_matriz,
+    es_cero,
+    es_uno,
+    son_iguales,
 )
 from .parse import (
-    parse_scalar,
-    parse_vector,
-    parse_matrix,
+    parsear_escalar,
+    parsear_vector,
+    parsear_matriz,
+)
+from .format import (
+     formatear_escalar,
+     formatear_matriz,
+)
+from .validate import (
+    asegurar_rectangular,
+    asegurar_cuadrada,
+    asegurar_multiplicable,
+    asegurar_aumentada,
+    asegurar_intervalo,
+    asegurar_cambio_signo,
 )
 
 __all__ = [
-    "set_number_mode",
-    "to_num",
-    "to_matrix",
-    "is_zero",
-    "is_one",
-    "eq",
-    "parse_scalar",
-    "parse_vector",
-    "parse_matrix",
+    "configurar_modo_numerico",
+    "convertir_a_numero",
+    "convertir_a_matriz",
+    "es_cero",
+    "es_uno",
+    "son_iguales",
+    "parsear_escalar",
+    "parsear_vector",
+    "parsear_matriz",
+     "formatear_escalar",
+     "formatear_matriz",
+    "asegurar_rectangular",
+    "asegurar_cuadrada",
+    "asegurar_multiplicable",
+    "asegurar_aumentada",
+    "asegurar_intervalo",
+    "asegurar_cambio_signo",
 ]

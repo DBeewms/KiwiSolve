@@ -6,19 +6,19 @@ Convertir texto a números, vectores y matrices usando reglas restringidas y
 mensajes de error claros en español, sin ejecutar código arbitrario.
 
 Funciones públicas (resumen)
-----------------------------
-- parse_scalar(text)
+-----------------------------
+- parsear_escalar(texto)
     Convierte un escalar en una cantidad numérica (int, float o Fraction).
     Admite: enteros, decimales, fracciones a/b, paréntesis, raíz cuadrada
     (sqrt(expr)), potencia con ^ y combinaciones anidadas (p. ej. (1/2)^(3/2),
     (1/2)/(3/4), fracciones como exponentes, etc.). No se soporta suma/resta
     binaria; el signo negativo unario sí está permitido.
 
-- parse_vector(text)
+- parsear_vector(texto)
     Convierte un texto estilo [ item, item, ... ] a lista de números (usa
-    parse_scalar por elemento).
+    parsear_escalar por elemento).
 
-- parse_matrix(text)
+- parsear_matriz(texto)
     Convierte un texto estilo [[fila1],[fila2],...] a lista de filas numéricas.
     Verifica que todas las filas tengan la misma longitud.
 
@@ -238,15 +238,15 @@ def _evaluar(nodo):
 
 # --- Funciones públicas -------------------------------------------------------
 
-def parse_scalar(text):
+def parsear_escalar(texto):
     """Convierte un texto a un número (int, float o Fraction).
 
     Soporta combinaciones anidadas de fracciones, potencias (asociativas a la
     derecha) y sqrt. No admite suma/resta binaria. El signo negativo unario sí.
     """
-    if not text or not text.strip():
+    if not texto or not texto.strip():
         raise ValueError("texto vacío")
-    texto = _limpiar(text)
+    texto = _limpiar(texto)
     tokens = _tokenizar(texto)
     parser = _Parser(tokens)
     arbol = parser.expr()
@@ -256,14 +256,14 @@ def parse_scalar(text):
     return _evaluar(arbol)
 
 
-def parse_vector(text):
+def parsear_vector(texto):
     """Convierte un texto de vector a una lista de números.
 
     Ejemplo: "[1/2, -3, 0.25]" devuelve [Fraction(1,2), -3, 0.25].
     """
-    if not text or not text.strip():
+    if not texto or not texto.strip():
         raise ValueError("texto vacío")
-    t = text.strip()
+    t = texto.strip()
     if not (t.startswith('[') and t.endswith(']')):
         raise ValueError("vector debe iniciar con '[' y terminar con '']'")
     inner = t[1:-1].strip()
@@ -290,18 +290,18 @@ def parse_vector(text):
             current.append(ch)
     if current:
         items.append(''.join(current).strip())
-    result = [parse_scalar(it) for it in items if it]
+    result = [parsear_escalar(it) for it in items if it]
     return result
 
 
-def parse_matrix(text):
+def parsear_matriz(texto):
     """Convierte texto de matriz ([[...],[...],...]) a lista de listas numéricas.
 
     Verifica que todas las filas tengan la misma longitud.
     """
-    if not text or not text.strip():
+    if not texto or not texto.strip():
         raise ValueError("texto vacío")
-    t = text.strip()
+    t = texto.strip()
     if not (t.startswith('[') and t.endswith(']')):
         raise ValueError("matriz debe iniciar con '[' y terminar con '']'")
 
@@ -338,7 +338,7 @@ def parse_matrix(text):
         r = r.strip()
         if not r.startswith('[') or not r.endswith(']'):
             raise ValueError(f"fila inválida: '{r}'")
-        vec = parse_vector(r)
+        vec = parsear_vector(r)
         if width is None:
             width = len(vec)
         elif len(vec) != width:
@@ -348,7 +348,7 @@ def parse_matrix(text):
     return rows
 
 __all__ = [
-    'parse_scalar',
-    'parse_vector',
-    'parse_matrix',
+    'parsear_escalar',
+    'parsear_vector',
+    'parsear_matriz',
 ]
