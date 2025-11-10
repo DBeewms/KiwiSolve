@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Multiplicación · KiwiSolve{% endblock %}
+
+{% block extra_head %}
+  <link rel="stylesheet" href="{% static 'css/components/cards.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="section">
+  <h1>{{ titulo }}</h1>
+  <form method="post" class="form form-grid narrow" aria-describedby="matmul-descripcion">
+    {% csrf_token %}
+    <p id="matmul-descripcion" class="hint" style="margin-top:-.25rem;">Introduce las matrices en formato [[...],[...]]; se validan dimensiones automáticamente.</p>
+    <div class="field">
+      <label for="A">Matriz A (texto)</label>
+      <textarea id="A" name="A" required>{{ A }}</textarea>
+    </div>
+    <div class="field">
+      <label for="B">Matriz B (texto)</label>
+      <textarea id="B" name="B" required>{{ B }}</textarea>
+    </div>
+    <div class="field" style="display:flex; align-items:center; gap:.5rem;">
+      <input id="registrar" type="checkbox" name="registrar" {% if registrar %}checked{% endif %}>
+      <label for="registrar" style="font-weight:500;">Registrar pasos (Steps)</label>
+    </div>
+    <div>
+      <button class="button gradient" type="submit">Calcular A×B</button>
+      <a class="button outline" href="/">Volver</a>
+    </div>
+  </form>
+
+  {% if error %}
+    <script>
+      document.addEventListener('DOMContentLoaded', function(){
+        if (window.Swal) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: "{{ error|escapejs }}",
+            confirmButtonText: 'Cerrar'
+          });
+        }
+      });
+    </script>
+  {% endif %}
+
+  {% if resultado %}
+    <script>
+      document.addEventListener('DOMContentLoaded', function(){
+        if (window.Swal) {
+          Swal.fire({
+            icon: 'success',
+            title: 'Correcto',
+            text: 'Cálculo realizado correctamente.',
+            timer: 1400,
+            showConfirmButton: false
+          });
+        }
+      });
+    </script>
+  {% endif %}
+
+  {% if resultado %}
+    <div class="result-card" style="margin-top:1rem;">
+      <div class="result-header">
+        <div class="title-actions">
+          <h2>Resultado</h2>
+          <button type="button" class="button outline" data-copy-matrix="#matmul-res" aria-label="Copiar matriz">Copiar</button>
+        </div>
+        <div class="chips">
+          <span class="chip">A: {{ resultado.A|length }}×{{ resultado.A.0|length }}</span>
+          <span class="chip">B: {{ resultado.B|length }}×{{ resultado.B.0|length }}</span>
+          <span class="chip">C: {{ resultado.C|length }}×{{ resultado.C.0|length }}</span>
+          <span class="chip">Operación: A × B</span>
+        </div>
+      </div>
+      <table class="matrix-table">
+        <tbody>
+        {% for fila in resultado.C_formateada %}
+          <tr>
+            {% for val in fila %}
+              <td>{{ val }}</td>
+            {% endfor %}
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+      <pre id="matmul-res" style="position:absolute; left:-9999px; top:-9999px;">{% for fila in resultado.C_formateada %}[{% for val in fila %}{{ val }}{% if not forloop.last %}, {% endif %}{% endfor %}]{% if not forloop.last %}
+{% endif %}{% endfor %}</pre>
+    </div>
+  {% endif %}
+
+  {% if pasos and pasos|length > 0 %}
+    <div class="card" style="margin-top:1rem;">
+      <h2>Pasos</h2>
+      <ol>
+        {% for p in pasos %}
+          <li><code>{{ p.etapa }}</code> — {{ p.msg }} {% if p.state %}<small>{{ p.state }}</small>{% endif %}</li>
+        {% endfor %}
+      </ol>
+    </div>
+  {% endif %}
+</section>
+{% endblock %}

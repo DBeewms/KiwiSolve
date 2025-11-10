@@ -14,8 +14,7 @@ static/
     themes/
       kiwisolve-dark.css   # Overrides manuales para modo oscuro
   img/
-    logo.svg               # Logo provisional (puedes reemplazarlo por PNG/SVG final)
-    KiwiSolveLogo.png      # Tu logo final (si lo agregas)
+    KiwiSolveLogo.png      # Logo oficial provisto por el proyecto
 ```
 
 ## Orden de carga recomendado
@@ -33,13 +32,9 @@ Prefijo: `--ks-` para evitar colisiones.
 - Sombras: `--ks-shadow-sm|md|lg`
 - Tipografía base: `--ks-font-sans`
 
-## Añadir tu logo
-1. Copia tu archivo (PNG/SVG) a `static/img/`. Ej: `KiwiSolveLogo.png`.
-2. Edita la plantilla `templates/home.html` y reemplaza la imagen:
-   ```html
-   <img src="/static/img/KiwiSolveLogo.png" alt="Logo KiwiSolve" width="36" height="36">
-   ```
-3. Ajusta tamaños en la clase `.brand-logo` dentro de `layout.css` si necesitas otra escala.
+## Logo
+Este proyecto ya incluye el logotipo oficial en `static/img/KiwiSolveLogo.png` y se usa en las plantillas.
+Si tu instalación necesita otra escala, ajusta los tamaños desde CSS (por ejemplo en `.hero .logo img` o clases específicas) sin reemplazar el archivo.
 
 ## Crear un nuevo componente
 1. Crea archivo en `static/css/components/<nombre>.css`.

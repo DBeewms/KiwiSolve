@@ -3,7 +3,7 @@
   Estrategia:
     - Usa class .dark en <html> para activar overrides.
     - Persiste preferencia en localStorage (clave: ks-theme).
-    - Cambia icono (🌞 / 🌙) según estado.
+    - Actualiza iconos (sol/luna) según estado.
   Accesibilidad:
     - Botón con aria-label descriptivo.
     - Icono marcado aria-hidden.

@@ -27,3 +27,56 @@
 .button.secondary { --_bg: var(--ks-color-royal-purple); --_bg-hover: var(--ks-color-grape); }
 .button.outline { background: transparent; color: var(--ks-color-violet-blue); border: 1px solid var(--ks-color-violet-blue); }
 .button.outline:hover { background: var(--ks-color-violet-blue); color:#fff; }
+.button.outline:focus-visible { outline: 2px solid color-mix(in srgb, var(--ks-color-violet-blue) 45%, var(--ks-color-savoy)); outline-offset: 3px; }
+
+/* Modo oscuro: mejorar contraste del botón outline */
+html[data-theme='dark'] .button.outline {
+  color: color-mix(in srgb, #ffffff 92%, var(--ks-color-violet-blue));
+  border-color: color-mix(in srgb, var(--ks-color-violet-blue) 75%, #ffffff);
+}
+html[data-theme='dark'] .button.outline:hover {
+  background: color-mix(in srgb, var(--ks-color-violet-blue) 82%, #000000);
+  color: #fff;
+}
+html[data-theme='dark'] .button.outline:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--ks-color-violet-blue) 60%, var(--ks-color-savoy));
+  outline-offset: 3px;
+}
+
+/* Variantes cromáticas adicionales basadas en tokens */
+.button.sky { --_bg: var(--ks-color-sky); --_bg-hover: color-mix(in srgb, var(--ks-color-sky) 78%, var(--ks-color-savoy)); }
+.button.grape { --_bg: var(--ks-color-grape); --_bg-hover: color-mix(in srgb, var(--ks-color-grape) 85%, var(--ks-color-royal-purple)); }
+.button.savoy { --_bg: var(--ks-color-savoy); --_bg-hover: color-mix(in srgb, var(--ks-color-savoy) 80%, var(--ks-color-violet-blue)); }
+.button.violet { --_bg: var(--ks-color-violet-blue); --_bg-hover: var(--ks-color-savoy); }
+
+/* Botón de énfasis con gradiente (para acciones principales como Calcular) */
+.button.gradient {
+  background: linear-gradient(135deg, var(--ks-color-violet-blue) 0%, var(--ks-color-royal-purple) 50%, var(--ks-color-grape) 100%);
+  border: none;
+  color: #fff;
+  position: relative;
+  overflow: hidden;
+}
+.button.gradient:hover {
+  background: linear-gradient(135deg, var(--ks-color-savoy) 0%, var(--ks-color-royal-purple) 55%, var(--ks-color-grape) 100%);
+}
+.button.gradient:focus-visible { outline: 2px solid color-mix(in srgb, var(--ks-color-grape) 60%, var(--ks-color-savoy)); outline-offset: 3px; }
+.button.gradient:active { transform: translateY(1px); }
+
+/* Modo oscuro: preservar contraste del gradiente */
+html[data-theme='dark'] .button.gradient { box-shadow: 0 0 0 1px rgba(255,255,255,.08), var(--ks-shadow-sm); }
+
+/* Variante ghost (fondo transparente, sólo texto en gama azul→morado) */
+.button.ghost {
+  background: transparent;
+  color: var(--ks-color-violet-blue);
+  border: 1px solid transparent;
+  box-shadow: none;
+}
+.button.ghost:hover {
+  background: color-mix(in srgb, var(--ks-color-violet-blue) 12%, transparent);
+}
+.button.ghost:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--ks-color-violet-blue) 50%, var(--ks-color-savoy));
+  outline-offset: 3px;
+}

@@ -18,6 +18,8 @@
   --ks-color-text: #1f2937; /* slate-800 */
   --ks-color-muted: #6b7280; /* gray-500 */
   --ks-color-border: #e5e7eb; /* gray-200 */
+  /* Superficie por encima del fondo general: tarjetas, inputs */
+  --ks-color-surface: #ffffff;
 
   /* Radios consistentes */
   --ks-radius-xs: 4px;
@@ -31,7 +33,7 @@
   --ks-shadow-lg: 0 12px 28px rgba(31,41,55,.18);
 
   /* Tipografía del sistema para rendimiento y legibilidad */
-  --ks-font-sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, Noto Sans, "Apple Color Emoji", "Segoe UI Emoji";
+  --ks-font-sans: 'Poppins', ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, Noto Sans, "Apple Color Emoji", "Segoe UI Emoji";
 }
 
 /*
@@ -51,4 +53,5 @@ html[data-theme='dark'] {
   --ks-color-text: #e5e7eb;
   --ks-color-muted: #9ca3af;
   --ks-color-border: #1f2937;
+  --ks-color-surface: #0f162e; /* superficie elevada en dark */
 }

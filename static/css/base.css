@@ -21,9 +21,10 @@ body {
   background: var(--ks-color-bg);
   color: var(--ks-color-text);
   font-family: var(--ks-font-sans);
+  font-size: 18px;            /* Aumentar tamaño base de fuente */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  line-height: 1.45;
+  line-height: 1.5;           /* Ligeramente mayor para legibilidad */
 }
 
 /* Imágenes fluidas */

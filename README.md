@@ -215,9 +215,83 @@ fila = buscar_fila_pivote(M, col=1, fila_inicio=0)  # 0
 
 
 ## UI y temas
-- Botón de tema claro/oscuro (manual) en el header.
-- Preferencia persistida en `localStorage` (`ks-theme`).
+### Componentes y estilo actuales
+- Botón de tema claro/oscuro (manual) en el header (`theme-toggle.css` + `theme-toggle.js`).
+- Preferencia de tema persistida en `localStorage` (`ks-theme`).
 - No se detecta el tema del sistema: la app inicia en claro por defecto.
+- Inputs y formularios estilizados con `forms.css` (contraste elevado mediante `--ks-color-surface`).
+- Copia rápida de matrices resultado con botones `data-copy-matrix` (script `ui.js`).
+- Tarjetas interactivas en página de inicio (`cards.css`) con ripple y elevación.
+
+### Tokens de diseño
+Archivo: `static/css/kiwisolve.css`
+- Colores base (`--ks-color-bg`, `--ks-color-text`, `--ks-color-border`, etc.).
+- Nuevo token `--ks-color-surface` para diferenciar paneles e inputs del fondo.
+- Radios y sombras reutilizables.
+- Overrides de modo oscuro mediante `html[data-theme='dark']`.
+
+### Patrones de formularios (resumen)
+Estructura recomendada:
+```html
+<form class="form-grid narrow" aria-describedby="descripcion-form">
+  <p id="descripcion-form" class="hint">Texto contextual.</p>
+  <div class="field">
+    <label for="A">Matriz A</label>
+    <textarea id="A" name="A" required></textarea>
+    <span class="hint">Formato [[...],[...]]</span>
+  </div>
+  <!-- más .field -->
+  <div class="actions">
+    <button class="button" type="submit">Calcular</button>
+  </div>
+</form>
+```
+Para matrices de entrada editable (suma):
+```html
+<div class="matrix-panel">
+  <h3>Matriz A</h3>
+  <div class="matrix-grid" style="--cols: 3;">
+    <input type="text" name="A_0_0">
+    <!-- ... -->
+  </div>
+</div>
+```
+
+### Copia de resultados
+Cada tarjeta de resultado incluye:
+```html
+<button type="button" class="button secondary" data-copy-matrix="#id-pre">Copiar matriz</button>
+<pre id="id-pre" style="position:absolute; left:-9999px; top:-9999px;">[...]</pre>
+```
+El script `ui.js` captura el click y copia el contenido del `<pre>`.
+
+### Vistas de Álgebra (uso y estructura)
+
+Cada vista aplica los mismos patrones de UI para mantener consistencia:
+
+- Multiplicación (ruta: `/algebra/matmul/`)
+  - Formulario con dos áreas de texto: "Matriz A" y "Matriz B" (formato `[[...],[...]]`).
+  - Opción para registrar pasos (Steps) si el servicio lo soporta.
+  - Resultado mostrado en tarjeta `.result-card` con tabla `.matrix-table` y botón de copiado.
+
+- Determinante (ruta: `/algebra/det/`)
+  - Un área de texto "Matriz M" (cuadrada) y opción de registrar pasos.
+  - Salida con `det(M)` formateada según `core/format.py`.
+
+- Suma (ruta: `/algebra/suma/`)
+  - Controles de tamaño (filas/columnas) y formato de salida (fracciones/decimales).
+  - Dos paneles `.matrix-panel` con grillas `.matrix-grid` para ingresar A y B.
+  - Acciones: "Actualizar tamaño", "Limpiar", "Ejemplo aleatorio", "Calcular".
+  - Resultado en `.result-card` con botón para copiar matriz.
+
+Nota: Los comentarios explicativos se mantienen en este README para no sobrecargar las plantillas.
+
+### Extensiones futuras sugeridas
+- Navegación por teclado en grids (flechas para moverse entre celdas).
+- Validación inmediata (onblur) marcando celdas inválidas con clase `.error`.
+- Toast accesible (`aria-live`) tras copiar matriz.
+- Exportar matriz como LaTeX / Python / JSON desde la UI.
+- Persistir preferencia de formato de resultado (fracción/decimal) en `localStorage`.
 
 ## Convenciones de código (acuerdo de equipo)
 - Idioma: español para nombres, docstrings y mensajes.

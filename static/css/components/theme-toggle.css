@@ -1,10 +1,10 @@
 /*
   theme-toggle.css – Chip slider accesible (button role="switch").
-  Estructura HTML:
+  Estructura HTML (Heroicons inline):
     <button class="theme-toggle" role="switch" aria-checked="false">
       <span class="tt-track"></span>
-      <span class="tt-icon sun">🌞</span>
-      <span class="tt-icon moon">🌙</span>
+      <span class="tt-icon sun"><svg><!-- Sun --></svg></span>
+      <span class="tt-icon moon"><svg><!-- Moon --></svg></span>
       <span class="tt-handle"></span>
     </button>
   Lógica visual: depende de html[data-theme='dark'].
@@ -30,14 +30,14 @@
 .theme-toggle:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
 
 .theme-toggle .tt-track { position: absolute; inset: 0; border-radius: inherit; background: var(--border); }
-.theme-toggle .tt-icon { display: flex; align-items: center; justify-content: center; width: 18px; height: 18px; pointer-events: none; opacity: .55; transition: opacity .25s, transform .35s; }
+.theme-toggle .tt-icon { display: flex; align-items: center; justify-content: center; width: 20px; height: 20px; pointer-events: none; opacity: .55; transition: opacity .25s, transform .35s; }
 .theme-toggle .moon { position: absolute; right: 12px; }
 .theme-toggle .sun { position: absolute; left: 12px; }
 .theme-toggle .tt-handle { position: absolute; top: 3px; left: 3px; width: 26px; height: 26px; border-radius: 50%; background: #fff; box-shadow: 0 2px 4px rgba(0,0,0,.15); transition: transform .35s cubic-bezier(.65,.05,.36,1); }
 
 /* Estado oscuro controlado por atributo en <html> */
 html[data-theme='dark'] .theme-toggle { background: #2b314a; }
-html[data-theme='dark'] .theme-toggle .tt-handle { transform: translateX(38px); }
+html[data-theme='dark'] .theme-toggle .tt-handle { transform: translateX(38px); box-shadow: 0 0 0 2px rgba(255,255,255,.15); }
 html[data-theme='dark'] .theme-toggle .moon { opacity: 1; }
 html[data-theme='dark'] .theme-toggle .sun { opacity: .2; }
 

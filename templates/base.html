@@ -4,12 +4,17 @@
 <head>
   <meta charset="utf-8">
   <title>{% block title %}KiwiSolve · Álgebra Lineal{% endblock %}</title>
+  <!-- Fuente Poppins -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
   <!-- Tokens y estilos globales -->
   <link rel="stylesheet" href="{% static 'css/kiwisolve.css' %}">
   <link rel="stylesheet" href="{% static 'css/base.css' %}">
   <link rel="stylesheet" href="{% static 'css/layout.css' %}">
   <link rel="stylesheet" href="{% static 'css/components/buttons.css' %}">
   <link rel="stylesheet" href="{% static 'css/components/theme-toggle.css' %}">
+  <link rel="stylesheet" href="{% static 'css/components/forms.css' %}">
   <link rel="stylesheet" href="{% static 'css/themes/kiwisolve-dark.css' %}">
   {% block extra_head %}{% endblock %}
   <script>
@@ -36,7 +41,10 @@
     {% block content %}{% endblock %}
   </main>
   {% include 'partials/_footer.html' %}
+  <!-- SweetAlert2 para alertas modernas -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script src="{% static 'js/theme-toggle.js' %}"></script>
+  <script src="{% static 'js/ui.js' %}"></script>
   {% block extra_js %}{% endblock %}
 </body>
 </html>

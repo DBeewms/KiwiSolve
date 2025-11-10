@@ -1,0 +1,176 @@
+/* cards.css — Componentes de tarjetas y secciones de portada
+   Utiliza tokens de kiwisolve.css (colores, radios, sombras)
+*/
+
+.hero {
+  display: grid;
+  grid-template-columns: 96px 1fr;
+  align-items: center;
+  gap: 1rem 1.25rem;
+  padding: 1.75rem 1.75rem 1.5rem;
+  border: 1px solid var(--ks-color-border);
+  border-radius: var(--ks-radius-lg);
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--ks-color-sky) 8%, transparent),
+    transparent 60%
+  );
+  box-shadow: var(--ks-shadow-sm);
+}
+
+.hero .logo {
+  grid-row: span 2;
+  width: 96px;
+  height: 96px;
+  border-radius: var(--ks-radius-md);
+  background: var(--ks-color-bg);
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--ks-color-border);
+}
+
+.hero .title {
+  margin: 0;
+  font-size: 2rem;
+  line-height: 1.2;
+}
+
+.hero .subtitle {
+  margin: 0.25rem 0 0.25rem;
+  color: var(--ks-color-muted);
+}
+
+.hero .lead { margin: 0.25rem 0 0.5rem; }
+
+.hero .hero-links {
+  display: inline-flex;
+  gap: 1rem;
+  margin-top: .5rem;
+}
+.hero .hero-links a {
+  text-decoration: none;
+  color: var(--ks-color-royal-purple);
+  border-bottom: 1px solid transparent;
+  padding-bottom: 1px;
+}
+.hero .hero-links a:hover { border-bottom-color: currentColor; }
+.hero .hero-links a + a { color: var(--ks-color-muted); }
+
+.section {
+  margin-top: 2rem;
+}
+
+.section h2 {
+  margin: 0 0 .75rem;
+  font-size: 1.25rem;
+}
+
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1rem;
+}
+
+/* Tarjeta clicable (anchor o div) */
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+  height: 100%;
+  border: 1px solid var(--ks-color-border);
+  border-radius: var(--ks-radius-lg);
+  background: var(--ks-color-bg);
+  padding: 1rem 1rem 1.15rem;
+  box-shadow: var(--ks-shadow-sm);
+  text-decoration: none;
+  color: inherit;
+  position: relative;
+  isolation: isolate;
+  transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease, background-color .25s ease;
+}
+
+.card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(
+    145deg,
+    color-mix(in srgb, var(--ks-color-royal-purple) 8%, transparent) 0%,
+    transparent 60%
+  );
+  opacity: 0;
+  transition: opacity .25s ease;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.card:hover:not(.disabled),
+.card:focus-visible:not(.disabled) {
+  transform: translateY(-3px);
+  box-shadow: var(--ks-shadow-md);
+  border-color: color-mix(in srgb, var(--ks-color-royal-purple) 35%, var(--ks-color-border));
+}
+
+.card:hover::after,
+.card:focus-visible::after {
+  opacity: 1;
+}
+
+.card:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--ks-color-royal-purple) 55%, var(--ks-color-savoy));
+  outline-offset: 2px;
+}
+
+/* Ripple sutil al hacer click (centrado) */
+.card::before {
+  content: "";
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 0; height: 0;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--ks-color-royal-purple) 12%, transparent);
+  transform: translate(-50%, -50%) scale(0);
+  transition: transform .35s ease, width .35s ease, height .35s ease, opacity .5s ease;
+  opacity: 0;
+  pointer-events: none;
+}
+.card:active::before {
+  width: 240px; height: 240px;
+  transform: translate(-50%, -50%) scale(1);
+  opacity: 1;
+}
+
+.card.disabled {
+  cursor: not-allowed;
+  opacity: .55;
+  box-shadow: none;
+  transform: none;
+}
+
+.card .icon {
+  font-size: 1.4rem;
+}
+
+.card h3 {
+  margin: .25rem 0;
+  font-size: 1.1rem;
+}
+
+.card p {
+  margin: 0;
+  color: var(--ks-color-muted);
+}
+
+/* Acciones internas eliminadas: ahora la tarjeta completa es el área clicable */
+
+.badge {
+  display: inline-block;
+  font-size: .75rem;
+  padding: .15rem .5rem;
+  border-radius: var(--ks-radius-sm);
+  color: var(--ks-color-bg);
+  background: var(--ks-color-savoy);
+}
+
+/* Modo oscuro: se hereda desde tokens; este archivo no necesita overrides específicos */

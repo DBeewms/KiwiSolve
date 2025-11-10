@@ -1,23 +1,117 @@
 ﻿{% extends 'base.html' %}
+{% load static %}
 {% block title %}Inicio · KiwiSolve{% endblock %}
 
+{% block extra_head %}
+  <link rel="stylesheet" href="{% static 'css/components/cards.css' %}">
+{% endblock %}
+
 {% block content %}
-  <h1>Álgebra Lineal – Demo inicial</h1>
-  <p>Bienvenido a <strong>KiwiSolve</strong>. Esta es la estructura inicial: endpoints de demostración y estilos base para comenzar a integrar tu logo y UX.</p>
+  <!-- Sección hero / presentación -->
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="logo" aria-hidden="true">
+      <img src="{% static 'img/KiwiSolveLogo.png' %}" alt="KiwiSolve" width="72" height="72">
+    </div>
+    <div>
+      <h1 id="hero-title" class="title">KiwiSolve</h1>
+      <p class="subtitle">Álgebra lineal clara y trazable</p>
+      <p class="lead">
+        Experimenta con <strong>matrices</strong>, <strong>modos numéricos</strong> y <strong>formato</strong> automático.
+        Cada operación sigue un flujo pedagógico consistente.
+      </p>
+      <nav class="hero-links" aria-label="Acciones iniciales">
+        <a href="#operaciones">Operaciones</a>
+        <a href="#como-funciona">Cómo funciona</a>
+      </nav>
+    </div>
+  </section>
 
-  <div style="margin:1.5rem 0; display:flex; gap:1rem;">
-    <a class="button" href="/algebra/matmul/">Probar MatMul</a>
-    <a class="button secondary" href="/algebra/det/">Probar Determinante</a>
-    <a class="button outline" href="/">Recargar</a>
-  </div>
+  <!-- Sección de operaciones disponibles -->
+  <section id="operaciones" class="section" aria-labelledby="ops-title">
+    <h2 id="ops-title">Operaciones disponibles</h2>
+    <div class="cards-grid">
+      <a class="card" href="/algebra/suma/" aria-label="Suma de matrices" data-ripple>
+        <div class="icon" aria-hidden="true">
+          <!-- Heroicon: plus -->
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/>
+          </svg>
+        </div>
+        <h3>Suma de matrices</h3>
+        <p>Suma A+B del mismo tamaño y obtén el resultado en fracciones o decimales.</p>
+      </a>
+      <a class="card" href="/algebra/matmul/" aria-label="Multiplicación de matrices" data-ripple>
+        <div class="icon" aria-hidden="true">
+          <!-- Heroicon: squares-2x2 (outline) -->
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+            <rect x="3" y="3" width="7" height="7" rx="1" />
+            <rect x="14" y="3" width="7" height="7" rx="1" />
+            <rect x="3" y="14" width="7" height="7" rx="1" />
+            <rect x="14" y="14" width="7" height="7" rx="1" />
+          </svg>
+        </div>
+        <h3>Multiplicación de matrices</h3>
+        <p>Calcula A×B verificando dimensiones y mostrando el resultado formateado.</p>
+      </a>
 
-  <section>
-    <h2>Próximos pasos</h2>
-    <ul>
-      <li>Crear carpeta <code>apps/algebra/services/</code> con lógica pura (matrices, determinante, validaciones).</li>
-      <li>Agregar pruebas en <code>apps/algebra/tests.py</code> apuntando a <em>services</em>.</li>
-      <li>Incluir formulario o endpoint JSON para enviar matrices.</li>
-      <li>Optimizar rendimiento (NumPy / SymPy según operación).</li>
-    </ul>
+      <a class="card" href="/algebra/det/" aria-label="Determinante de matriz" data-ripple>
+        <div class="icon" aria-hidden="true">
+          <!-- Heroicon: bars-3 (outline) -->
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 5.25h16.5m-16.5 6h16.5m-16.5 6h16.5" />
+          </svg>
+        </div>
+        <h3>Determinante</h3>
+        <p>Obtén el determinante de una matriz cuadrada con validaciones previas.</p>
+      </a>
+
+      <div class="card disabled" aria-label="Eliminación Gaussiana (Próximamente)" aria-disabled="true">
+        <div class="icon" aria-hidden="true">
+          <!-- Heroicon: arrow-path -->
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.181a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.181" />
+          </svg>
+        </div>
+        <h3>Eliminación Gaussiana <span class="badge">Próximamente</span></h3>
+        <p>Resuelve sistemas y calcula rangos/pivotes con trazabilidad de pasos.</p>
+      </div>
+
+      <div class="card disabled" aria-label="Inversa de matriz (Próximamente)" aria-disabled="true">
+        <div class="icon" aria-hidden="true">
+          <!-- Heroicon: arrow-path-rounded-square -->
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 7.5h9v9h-9z" />
+            <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5l-3 3-3-3" />
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 13.5h6" />
+          </svg>
+        </div>
+        <h3>Inversa de matriz <span class="badge">Próximamente</span></h3>
+        <p>Calcula la inversa (si existe) mediante operaciones elementales de fila.</p>
+      </div>
+
+      <div class="card disabled" aria-label="Autovalores (Exploración)" aria-disabled="true">
+        <div class="icon" aria-hidden="true">
+          <!-- Heroicon: sparkles -->
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 3.75l1.8 4.95 4.95 1.8-4.95 1.8-1.8 4.95-1.8-4.95-4.95-1.8 4.95-1.8z" />
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 4.5l.9 2.475 2.475.9-2.475.9-.9 2.475-.9-2.475-2.475-.9 2.475-.9z" />
+            <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 15l.9 2.475 2.475.9-2.475.9-.9 2.475-.9-2.475-2.475-.9 2.475-.9z" />
+          </svg>
+        </div>
+        <h3>Autovalores <span class="badge">Exploración</span></h3>
+        <p>Próxima etapa: obtención de espectro y vectores propios para estudio.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Mini sección: cómo funciona -->
+  <section id="como-funciona" class="section" aria-labelledby="flow-title">
+    <h2 id="flow-title">Cómo funciona</h2>
+    <p>
+      El flujo es simple: <strong>parseo</strong> del texto → <strong>modo numérico</strong>
+      (fracción/flotante) → <strong>validaciones</strong> → <strong>operación</strong> →
+      <strong>formateo</strong> para mostrar resultados consistentes. Opcionalmente, puedes
+      activar <em>Steps</em> para registrar los pasos pedagógicos de un cálculo.
+    </p>
   </section>
 {% endblock %}

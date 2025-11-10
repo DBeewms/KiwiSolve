@@ -1,0 +1,132 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Suma de matrices · KiwiSolve{% endblock %}
+
+{% block extra_head %}
+  <link rel="stylesheet" href="{% static 'css/components/cards.css' %}">
+{% endblock %}
+
+{% block content %}
+  <section class="section">
+    <h1>{{ titulo }}</h1>
+    <form method="post" class="form-grid narrow" aria-describedby="suma-descripcion">
+      {% csrf_token %}
+      <p id="suma-descripcion" class="hint" style="margin-top:-.25rem;">Ingresa cada celda como número, fracción a/b o expresión simple (sqrt, potencias). Ajusta el tamaño y calcula.</p>
+      <div class="controls">
+        <div class="field">
+          <label for="filas">Filas</label>
+          <input type="number" id="filas" name="filas" min="1" max="8" value="{{ filas }}">
+        </div>
+        <div class="field">
+          <label for="cols">Columnas</label>
+          <input type="number" id="cols" name="cols" min="1" max="8" value="{{ cols }}">
+        </div>
+        <div class="field">
+          <label for="formato">Formato de resultado</label>
+          <select id="formato" name="formato">
+            <option value="fraction" {% if formato == 'fraction' %}selected{% endif %}>Fracciones</option>
+            <option value="float" {% if formato == 'float' %}selected{% endif %}>Decimales</option>
+          </select>
+        </div>
+        <div class="field" style="align-self:end;">
+          <button class="button savoy" name="accion" value="actualizar" type="submit">Actualizar</button>
+        </div>
+      </div>
+
+      <div class="matrices">
+        <div class="matrix-panel">
+          <h3>Matriz A</h3>
+          <div class="matrix-scroll" aria-label="Área de scroll para matriz A">
+            <div class="matrix-grid" style="--cols: {{ cols }};" data-cols="{{ cols }}">
+              {# Se itera directamente sobre filas y columnas de A_vals #}
+              {% for fila in A_vals %}
+                {% for val in fila %}
+                  <input type="text" name="A_{{ forloop.parentloop.counter0 }}_{{ forloop.counter0 }}" value="{{ val }}">
+                {% endfor %}
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+        <div class="matrix-panel">
+          <h3>Matriz B</h3>
+          <div class="matrix-scroll" aria-label="Área de scroll para matriz B">
+            <div class="matrix-grid" style="--cols: {{ cols }};" data-cols="{{ cols }}">
+              {% for fila in B_vals %}
+                {% for val in fila %}
+                  <input type="text" name="B_{{ forloop.parentloop.counter0 }}_{{ forloop.counter0 }}" value="{{ val }}">
+                {% endfor %}
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button class="button violet" name="accion" value="limpiar" type="submit">Limpiar</button>
+        <button class="button sky" name="accion" value="ejemplo" type="submit">Ejemplo</button>
+        <button class="button gradient" name="accion" value="calcular" type="submit">Calcular</button>
+      </div>
+
+      {% if error %}
+        <script>
+          document.addEventListener('DOMContentLoaded', function(){
+            if (window.Swal) {
+              Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: "{{ error|escapejs }}",
+                confirmButtonText: 'Cerrar'
+              });
+            }
+          });
+        </script>
+      {% endif %}
+
+          {% if resultado %}
+            <script>
+              document.addEventListener('DOMContentLoaded', function(){
+                if (window.Swal) {
+                  Swal.fire({
+                    icon: 'success',
+                    title: 'Correcto',
+                    text: 'Cálculo realizado correctamente.',
+                    timer: 1400,
+                    showConfirmButton: false
+                  });
+                }
+              });
+            </script>
+          {% endif %}
+
+      {% if resultado %}
+        <div class="result-card" style="margin-top:1rem;">
+          <div class="result-header">
+            <div class="title-actions">
+              <h3>Resultado A + B</h3>
+              <button type="button" class="button outline" data-copy-matrix="#suma-res" aria-label="Copiar matriz">Copiar</button>
+            </div>
+            <div class="chips">
+              <span class="chip">A: {{ filas }}×{{ cols }}</span>
+              <span class="chip">B: {{ filas }}×{{ cols }}</span>
+              <span class="chip">C: {{ resultado.C_formateada|length }}×{{ resultado.C_formateada.0|length }}</span>
+              <span class="chip">Operación: A + B</span>
+            </div>
+          </div>
+          <div class="matrix-scroll" aria-label="Área de scroll para matriz resultado">
+            <table class="matrix-table">
+              <tbody>
+                {% for fila in resultado.C_formateada %}
+                  <tr>
+                    {% for celda in fila %}<td>{{ celda }}</td>{% endfor %}
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+          <pre id="suma-res" style="position:absolute; left:-9999px; top:-9999px;">{% for fila in resultado.C_formateada %}[{% for celda in fila %}{{ celda }}{% if not forloop.last %}, {% endif %}{% endfor %}]{% if not forloop.last %}
+{% endif %}{% endfor %}</pre>
+        </div>
+      {% endif %}
+    </form>
+  </section>
+{% endblock %}

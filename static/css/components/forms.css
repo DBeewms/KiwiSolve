@@ -1,0 +1,197 @@
+/*
+  forms.css – Estilos modernos para formularios, entradas y salidas de matrices
+  Objetivos:
+    - Inputs y selects con apariencia consistente y focus visible.
+    - Layouts en grid para controles y matrices.
+    - Tablas de resultados más legibles y agradables.
+    - Compatible con modo oscuro usando tokens de kiwisolve.css.
+
+  Cómo usar (resumen):
+    - Envuelve formularios con .form o .form-grid. Usa .field por control.
+    - Para matrices de entrada: .matrix-panel + .matrix-grid (con --cols).
+    - Para resultados: .result-card + .matrix-table.
+*/
+
+/* Contenedores de formulario */
+.form,
+.form-grid {
+  display: grid;
+  gap: 1rem;
+}
+
+.form-grid.narrow { max-width: 1100px; } /* Ampliado para igualar ancho del home */
+
+/* Campos */
+.field { display: grid; gap: .35rem; }
+.field label { font-weight: 600; font-size: .95rem; color: var(--ks-color-text); }
+.field .hint { color: var(--ks-color-muted); font-size: .85rem; }
+
+/* Controles */
+.form input[type="text"],
+.form input[type="number"],
+.form textarea,
+.form select,
+.form-grid input[type="text"],
+.form-grid input[type="number"],
+.form-grid textarea,
+.form-grid select {
+  appearance: none;
+  width: 100%;
+  padding: .75rem .85rem;
+  background: var(--ks-color-surface);
+  color: var(--ks-color-text);
+  border: 1px solid color-mix(in srgb, var(--ks-color-border) 85%, transparent);
+  border-radius: .5rem;
+  box-shadow: 0 1px 0 rgba(0,0,0,.02) inset, 0 0 0 0 rgba(0,0,0,0);
+  transition: border-color .15s ease, box-shadow .15s ease, background-color .25s ease, transform .05s ease;
+  font-size: 1rem; /* aumenta tamaño de fuente de inputs */
+}
+
+.form textarea { min-height: 108px; resize: vertical; }
+
+.form input:hover,
+.form textarea:hover,
+.form select:hover,
+.form-grid input:hover,
+.form-grid textarea:hover,
+.form-grid select:hover {
+  border-color: color-mix(in srgb, var(--ks-color-royal-purple) 35%, var(--ks-color-border));
+}
+
+.form input:focus,
+.form textarea:focus,
+.form select:focus,
+.form-grid input:focus,
+.form-grid textarea:focus,
+.form-grid select:focus {
+  outline: none;
+  border-color: color-mix(in srgb, var(--ks-color-royal-purple) 55%, var(--ks-color-border));
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--ks-color-royal-purple) 20%, transparent);
+  transform: translateY(-1px);
+}
+
+/* Estados de validación básicos (HTML5) */
+.form input:invalid,
+.form textarea:invalid,
+.form select:invalid,
+.form-grid input:invalid,
+.form-grid textarea:invalid,
+.form-grid select:invalid {
+  border-color: color-mix(in srgb, #dc2626 65%, var(--ks-color-border));
+  box-shadow: 0 0 0 3px color-mix(in srgb, #dc2626 15%, transparent);
+}
+
+/* Controles agrupados (filas/columnas/formato) */
+.controls { display: flex; flex-wrap: wrap; gap: .75rem 1.25rem; align-items: end; }
+.controls .field { min-width: 140px; }
+
+/* Matrices de entrada */
+.matrix-panel {
+  border: 1px solid color-mix(in srgb, var(--ks-color-border) 85%, transparent);
+  border-radius: var(--ks-radius-md);
+  padding: .85rem;
+  background: var(--ks-color-surface);
+  box-shadow: var(--ks-shadow-sm);
+}
+.matrix-panel h3 { margin: 0 0 .5rem; font-size: 1rem; }
+
+.matrix-grid { 
+  display: grid; 
+  gap: .35rem; 
+  /* Fijamos ancho de columna para estabilidad y permitimos scroll envolvente */
+  grid-template-columns: repeat(var(--cols, 2), 52px); 
+  width: max-content; 
+}
+.matrix-grid input[type="text"] {
+  text-align: center;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 1rem;
+  width: 52px;
+  min-width: 52px;
+}
+
+.matrices { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+@media (max-width: 900px) { .matrices { grid-template-columns: 1fr; } }
+
+/* Acciones */
+.actions { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: .25rem; }
+
+/* Alertas */
+.alert {
+  border: 1px solid color-mix(in srgb, #c0392b 65%, var(--ks-color-border));
+  background: color-mix(in srgb, #c0392b 8%, var(--ks-color-bg));
+  color: #7f1d1d;
+  padding: .65rem .85rem;
+  border-radius: .5rem;
+}
+
+/* Resultado de matrices */
+.result-card {
+  border: 1px solid color-mix(in srgb, var(--ks-color-border) 85%, transparent);
+  border-radius: var(--ks-radius-lg);
+  padding: .85rem .85rem 1rem;
+  background: var(--ks-color-surface);
+  box-shadow: var(--ks-shadow-sm);
+}
+.result-card h3, .result-card h2 { margin: 0 0 .5rem; }
+
+/* Encabezado de resultado con título a la izquierda y chips a la derecha */
+.result-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .5rem 1rem;
+  flex-wrap: wrap; /* En móviles, las chips pueden bajar debajo del título */
+  margin-bottom: .75rem; /* más espacio entre el título y la matriz */
+}
+.result-header h3, .result-header h2 {
+  margin: 0; /* ya agrega separación el contenedor */
+}
+.result-header .chips { margin: 0; }
+
+/* Grupo de título + botón copiar alineados en línea */
+.result-header .title-actions {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+}
+
+/* Chips de metadatos en resultados */
+.chips { display: flex; flex-wrap: wrap; gap: .4rem; margin: 0 0 .5rem; }
+.chip {
+  background: linear-gradient(135deg, color-mix(in srgb, var(--ks-color-violet-blue) 85%, var(--ks-color-savoy)) 0%, var(--ks-color-grape) 100%);
+  color: #fff;
+  padding: .4rem .8rem; /* más grande */
+  font-size: .8rem;     /* más grande */
+  letter-spacing: .5px;
+  line-height: 1.1;
+  border-radius: 2rem;
+  font-weight: 600;
+  box-shadow: 0 1px 2px rgba(0,0,0,.15);
+  user-select: none;
+}
+html[data-theme='dark'] .chip { box-shadow: 0 1px 2px rgba(0,0,0,.6); }
+
+.matrix-table { border-collapse: separate; border-spacing: 0; width: auto; overflow: hidden; border-radius: .5rem; }
+.matrix-table td, .matrix-table th {
+  border: 1px solid var(--ks-color-border);
+  padding: .4rem .6rem;
+  text-align: center;
+}
+.matrix-table tr:nth-child(odd) td { background: color-mix(in srgb, var(--ks-color-sky) 6%, transparent); }
+.matrix-table tr:nth-child(even) td { background: color-mix(in srgb, var(--ks-color-sky) 3%, transparent); }
+
+/* Modo oscuro: mejorar contraste de inputs y tablas */
+html[data-theme='dark'] .matrix-table tr:nth-child(odd) td { background: color-mix(in srgb, #1f2937 45%, transparent); }
+html[data-theme='dark'] .matrix-table tr:nth-child(even) td { background: color-mix(in srgb, #111827 45%, transparent); }
+
+/* Contenedor scroll para matrices (inputs y resultados) */
+.matrix-scroll {
+  overflow: auto;
+  max-width: 100%;
+  padding-bottom: .25rem;
+}
+/* Altura máxima opcional en matrices muy grandes (activar si se necesita) */
+@media (min-width: 700px) {
+  .matrix-scroll.large { max-height: 420px; }
+}
