@@ -195,3 +195,32 @@ html[data-theme='dark'] .matrix-table tr:nth-child(even) td { background: color-
 @media (min-width: 700px) {
   .matrix-scroll.large { max-height: 420px; }
 }
+
+/* Estilos para MathLive en celdas de matriz (suma) */
+math-field.math-cell {
+  width: 52px;
+  min-width: 52px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid color-mix(in srgb, var(--ks-color-border) 85%, transparent);
+  border-radius: .5rem;
+  background: var(--ks-color-surface);
+  color: inherit;
+  font-size: 1rem;
+}
+
+html[data-theme='dark'] math-field.math-cell {
+  background: var(--ks-color-surface);
+  border-color: color-mix(in srgb, var(--ks-color-border) 55%, transparent);
+}
+
+math-field.math-cell:focus-within {
+  outline: none;
+  border-color: color-mix(in srgb, var(--ks-color-royal-purple) 55%, var(--ks-color-border));
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--ks-color-royal-purple) 20%, transparent);
+}
+
+/* Ocultar el toggle embebido: usaremos el FAB */
+math-field::part(virtual-keyboard-toggle) { display: none; }

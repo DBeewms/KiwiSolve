@@ -16,6 +16,8 @@
   <link rel="stylesheet" href="{% static 'css/components/theme-toggle.css' %}">
   <link rel="stylesheet" href="{% static 'css/components/forms.css' %}">
   <link rel="stylesheet" href="{% static 'css/themes/kiwisolve-dark.css' %}">
+  <!-- MathLive (math-field) styles per official docs -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mathlive/dist/mathlive-static.css" />
   {% block extra_head %}{% endblock %}
   <script>
     // Inicialización de tema: SIEMPRE claro por defecto salvo preferencia guardada
@@ -43,8 +45,11 @@
   {% include 'partials/_footer.html' %}
   <!-- SweetAlert2 para alertas modernas -->
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <!-- MathLive para entrada matemática visual (CDN recomendado) -->
+  <script src="https://cdn.jsdelivr.net/npm/mathlive/dist/mathlive.min.js"></script>
   <script src="{% static 'js/theme-toggle.js' %}"></script>
   <script src="{% static 'js/ui.js' %}"></script>
+  <script src="{% static 'js/mathlive-adapter.js' %}"></script>
   {% block extra_js %}{% endblock %}
 </body>
 </html>

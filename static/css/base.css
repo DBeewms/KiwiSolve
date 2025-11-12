@@ -39,3 +39,84 @@ hr { border: 0; border-top: 1px solid var(--ks-color-border); margin: 2rem 0; }
 
 /* Contenedor central estándar */
 .container { max-width: 1100px; margin: 0 auto; padding: 0 1rem; }
+
+/* ---------- MathLive Virtual Keyboard Theming (refactor) ---------- */
+body {
+  /* Tamaño más compacto */
+  --keycap-height: 40px;              /* altura de tecla mayor para legibilidad */
+  --keycap-font-size: 16px;           /* tamaño de etiqueta de tecla mayor */
+  --keycap-gap: 5px;                  /* separación entre teclas */
+  --keyboard-toolbar-font-size: 15px; /* toolbar ligeramente más grande */
+  --keyboard-padding-horizontal: 10px;
+  --keyboard-padding-top: 8px;
+  --keyboard-padding-bottom: 10px;
+  --keyboard-row-padding-left: 6px;
+  --keyboard-row-padding-right: 6px;
+  --keyboard-zindex: 1200;
+
+  /* Colores adaptados a paleta KiwiSolve */
+  --keyboard-accent-color: var(--ks-color-violet-blue);
+  --keyboard-toolbar-text: var(--ks-color-text);
+  --keyboard-toolbar-text-active: var(--ks-color-royal-purple);
+  --keyboard-toolbar-background: var(--ks-color-surface);
+  --keyboard-toolbar-background-hover: color-mix(in srgb, var(--ks-color-sky) 12%, var(--ks-color-surface));
+  --keyboard-toolbar-background-selected: color-mix(in srgb, var(--ks-color-violet-blue) 18%, var(--ks-color-surface));
+  --keycap-background: color-mix(in srgb, var(--ks-color-sky) 8%, var(--ks-color-surface));
+  --keycap-background-hover: color-mix(in srgb, var(--ks-color-sky) 20%, var(--ks-color-surface));
+  --keycap-background-active: color-mix(in srgb, var(--ks-color-sky) 30%, var(--ks-color-surface));
+  --keycap-background-pressed: color-mix(in srgb, var(--ks-color-violet-blue) 22%, var(--ks-color-surface));
+  --keycap-border: color-mix(in srgb, var(--ks-color-border) 70%, transparent);
+  --keycap-border-bottom: color-mix(in srgb, var(--ks-color-border) 85%, transparent);
+  --keycap-text: var(--ks-color-text);
+  --keycap-text-hover: var(--ks-color-text);
+  --keycap-text-active: var(--ks-color-text);
+  --keycap-text-pressed: var(--ks-color-text);
+  --keycap-primary-background: var(--ks-color-violet-blue);
+  --keycap-primary-text: #fff;
+  --keycap-primary-background-hover: var(--ks-color-savoy);
+  --keycap-secondary-background: color-mix(in srgb, var(--ks-color-violet-blue) 12%, transparent);
+  --keycap-secondary-background-hover: color-mix(in srgb, var(--ks-color-violet-blue) 25%, transparent);
+  --keycap-secondary-text: var(--ks-color-violet-blue);
+  --keycap-secondary-border: var(--ks-color-violet-blue);
+  --keycap-secondary-border-bottom: var(--ks-color-royal-purple);
+}
+
+html[data-theme='dark'] body {
+  --keyboard-toolbar-background: color-mix(in srgb, #0f172a 85%, var(--ks-color-surface));
+  --keyboard-toolbar-background-hover: color-mix(in srgb, #1e293b 80%, var(--ks-color-surface));
+  --keyboard-toolbar-background-selected: color-mix(in srgb, var(--ks-color-royal-purple) 40%, #1e293b);
+  --keycap-background: color-mix(in srgb, #1e293b 65%, transparent);
+  --keycap-background-hover: color-mix(in srgb, #334155 65%, transparent);
+  --keycap-background-active: color-mix(in srgb, var(--ks-color-violet-blue) 35%, #1e293b);
+  --keycap-background-pressed: color-mix(in srgb, var(--ks-color-grape) 40%, #1e293b);
+  --keycap-border: color-mix(in srgb, #334155 85%, transparent);
+  --keycap-border-bottom: color-mix(in srgb, #475569 85%, transparent);
+  --keycap-text: #f8fafc;
+  --keycap-text-hover: #fff;
+  --keycap-text-active: #fff;
+  --keycap-text-pressed: #fff;
+  --keycap-secondary-background: color-mix(in srgb, var(--ks-color-violet-blue) 25%, transparent);
+  --keycap-secondary-background-hover: color-mix(in srgb, var(--ks-color-violet-blue) 40%, transparent);
+  --keycap-secondary-text: #fff;
+  --keycap-secondary-border: var(--ks-color-violet-blue);
+  --keycap-secondary-border-bottom: var(--ks-color-grape);
+}
+
+/* Responsive: reducir el tamaño del teclado en pantallas con poca altura */
+@media (max-height: 700px) {
+  body {
+    --keycap-height: 30px;
+    --keycap-font-size: 14px;
+    --keycap-gap: 3px;
+    --keyboard-toolbar-font-size: 13px;
+  }
+}
+
+@media (max-height: 580px) {
+  body {
+    --keycap-height: 26px;
+    --keycap-font-size: 13px;
+    --keycap-gap: 2px;
+    --keyboard-toolbar-font-size: 12px;
+  }
+}

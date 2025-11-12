@@ -15,10 +15,16 @@
     <div class="field">
       <label for="A">Matriz A (texto)</label>
       <textarea id="A" name="A" required>{{ A }}</textarea>
+      <div style="margin-top:.35rem; display:flex; gap:.5rem; flex-wrap:wrap;">
+        <button type="button" class="button outline js-open-math-editor" data-target="#A" aria-label="Abrir editor matemático para A">Editor (teclado)</button>
+      </div>
     </div>
     <div class="field">
       <label for="B">Matriz B (texto)</label>
       <textarea id="B" name="B" required>{{ B }}</textarea>
+      <div style="margin-top:.35rem; display:flex; gap:.5rem; flex-wrap:wrap;">
+        <button type="button" class="button outline js-open-math-editor" data-target="#B" aria-label="Abrir editor matemático para B">Editor (teclado)</button>
+      </div>
     </div>
     <div class="field" style="display:flex; align-items:center; gap:.5rem;">
       <input id="registrar" type="checkbox" name="registrar" {% if registrar %}checked{% endif %}>

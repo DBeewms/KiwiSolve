@@ -80,3 +80,33 @@ html[data-theme='dark'] .button.gradient { box-shadow: 0 0 0 1px rgba(255,255,25
   outline: 2px solid color-mix(in srgb, var(--ks-color-violet-blue) 50%, var(--ks-color-savoy));
   outline-offset: 3px;
 }
+
+/* Floating Action Button: teclado MathLive */
+.fab {
+  position: fixed;
+  right: 3rem;    /* aún menos pegado a la esquina */
+  bottom: 7rem;   /* un poco más arriba */
+  z-index: 3200;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;    /* botón más grande */
+  height: 60px;   /* botón más grande */
+  border-radius: 999px;
+  border: none;
+  background: linear-gradient(135deg, var(--ks-color-violet-blue) 0%, var(--ks-color-royal-purple) 60%, var(--ks-color-grape) 100%);
+  color: #fff;
+  box-shadow: 0 8px 24px rgba(0,0,0,.18), 0 2px 6px rgba(0,0,0,.12);
+  cursor: pointer;
+}
+.fab:hover { filter: brightness(1.05); }
+.fab:active { transform: translateY(1px); }
+.fab:focus-visible { outline: 3px solid color-mix(in srgb, var(--ks-color-savoy) 60%, var(--ks-color-violet-blue)); outline-offset: 3px; }
+.fab svg { pointer-events: none; width: 28px; height: 28px; }
+
+html[data-theme='dark'] .fab { box-shadow: 0 0 0 1px rgba(255,255,255,.08), 0 8px 24px rgba(0,0,0,.55); }
+
+/* Cuando el teclado virtual está visible, elevar el FAB por encima de él */
+body.vk-visible .fab {
+  bottom: calc(var(--vk-height, 0px) + 1rem);
+}

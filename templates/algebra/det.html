@@ -15,6 +15,9 @@
     <div class="field">
       <label for="M">Matriz M (texto)</label>
       <textarea id="M" name="M" required>{{ M }}</textarea>
+      <div style="margin-top:.35rem; display:flex; gap:.5rem; flex-wrap:wrap;">
+        <button type="button" class="button outline js-open-math-editor" data-target="#M" aria-label="Abrir editor matemático para M">Editor (teclado)</button>
+      </div>
     </div>
     <div class="field" style="display:flex; align-items:center; gap:.5rem;">
       <input id="registrar" type="checkbox" name="registrar" {% if registrar %}checked{% endif %}>
